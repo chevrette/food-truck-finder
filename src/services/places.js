@@ -12,7 +12,25 @@ const getAllPlaces = async () => {
   return data;
 };
 
-export const getClosestPlaces = async () => {
+const calculateDistance = (l1, l2) => {
+  const pi = 0.017453292519943295;
+  const r = 6371; // Earth radius
+  const cos = Math.cos;
+  const res =
+    0.5 -
+    cos((l2.latitude - l1.latitude) * pi) / 2 +
+    (cos(l1.latitude * pi) *
+      cos(l2.latitude * pi) *
+      (1 - cos((l2.longitude - l1.longitude) * pi))) /
+      2;
+  return 2 * r * Math.asin(Math.sqrt(res));
+};
+
+export const getClosestPlaces = async (location, count) => {
   const allPlaces = await getAllPlaces();
-  return allPlaces;
+  for (const place of allPlaces) {
+    place.distance = calculateDistance(location, place.location);
+  }
+  allPlaces.sort((p1, p2) => p1.distance - p2.distance);
+  return allPlaces.slice(0, count);
 };

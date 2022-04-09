@@ -1,15 +1,20 @@
 import { useState } from 'react';
+import { useLocation } from './../context/locationContext';
 import { getClosestPlaces } from './../services/places';
 import { loadingStatus } from './../constants';
 
+const placesNum = 10;
+
 const Places = () => {
+  const { location } = useLocation();
+
   const [places, setPlaces] = useState([]);
   const [loading, setLoading] = useState(loadingStatus.NOT_STARTED);
 
   const getClosestFoodTrucks = async () => {
     try {
       setLoading(loadingStatus.IN_PROGRESS);
-      const closestPlaces = await getClosestPlaces();
+      const closestPlaces = await getClosestPlaces(location, placesNum);
       setPlaces(closestPlaces);
       setLoading(loadingStatus.READY);
     } catch {
