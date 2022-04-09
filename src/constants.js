@@ -5,7 +5,7 @@ export const loadingStatus = {
   FAILED: -1,
 };
 
-export const exampleLocation = {
+export const defaultLocation = {
   latitude: '37.76201920035647',
   longitude: '-122.42730642251331',
 };

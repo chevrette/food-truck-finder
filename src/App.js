@@ -1,6 +1,6 @@
 import { useCallback, useEffect } from 'react';
 import { useLocation } from './context/locationContext';
-import { exampleLocation } from './constants';
+import { defaultLocation } from './constants';
 import Places from './components/Places';
 import './App.scss';
 
@@ -8,7 +8,16 @@ const App = () => {
   const { location, setLocation } = useLocation();
 
   const getLocation = useCallback(() => {
-    setLocation(exampleLocation);
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const userLocation = {
+          latitude: position.coords.latitude,
+          longitude: position.coords.longitude,
+        };
+        setLocation(userLocation);
+      },
+      () => setLocation(defaultLocation),
+    );
   }, [setLocation]);
 
   useEffect(() => {
@@ -17,8 +26,7 @@ const App = () => {
 
   return (
     <div className="App">
-      {location && <p>{location.latitude}</p>}
-      <Places />
+      {location && <Places />}
     </div>
   );
 };
