@@ -24,11 +24,7 @@ const App = () => {
     getLocation();
   }, [getLocation]);
 
-  return (
-    <div className="App">
-      {location && <Places />}
-    </div>
-  );
+  return <div className="App">{location && <Places />}</div>;
 };
 
 export default App;
